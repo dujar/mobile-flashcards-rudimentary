@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, TouchableOpacity, Text} from 'react-native'
+import {View, TouchableOpacity, Text, StyleSheet} from 'react-native'
 
 class StartQuiz extends Component {
 
@@ -55,22 +55,27 @@ class StartQuiz extends Component {
 
   _onPressButtonScore = (val) => {
     let num = 0
-    if(val==="correct") { val = 1}
-    this.setState((state) => ({
-      ...state,
-      scoreBoard: {
-        ...state.scoreBoard,
-        score: state.scoreBoard.score + num,
-        questions: {
-          [this.state.currentQuestion]: num
-        }
-      }
+    if(val === "correct") { num = 1}
 
-    }))
+    console.log("holy molly", val)
+    this.setState((oldState) => ({
+      ...oldState,
+      scoreBoard: {
+        ...oldState.scoreBoard,
+        score: oldState.scoreBoard.score + num,
+        questions: {
+          ...oldState.scoreBoard.questions,
+          [oldState.currentQuestion]: num
+        }
+      },
+      currentQuestion: oldState.currentQuestion + 1,
+      })
+    )
   }
   render(){
 
-    const {scoreBoard: {score}, currentQuestion, answer, question} = this.state
+    const {currentQuestion, answer} = this.state
+    const {score, questions} = this.state.scoreBoard
 // from params
 
 const deck = this.props.navigation.getParam('deck',"did not find it")
@@ -78,16 +83,22 @@ const questionLength = deck.questions.length
 const index = currentQuestion - 1
 //
 
-if(question > questionLength){
+if(index === questionLength){
   return (
-    <View>
-      <Text>Score : {score} --- </Text>
+    <View style={styles.quizContainer}>
+      <Text>Score : {score } --- </Text>
+      {/* {
+        Object.keys(questions).map(el => (questions[el]
+            ? <Text key={el} style={styles.correct}> correcto: { deck.questions[el]} </Text>
+            : <Text key={el} style={styles.incorrect}> wrongo: { deck.questions[el]} </Text>
+        ))
+      } */}
     </View>
   )
 }
 
     return(
-<View>
+<View style={styles.quizContainer}>
 
 <Text> Question : {currentQuestion} out of {questionLength}</Text>
 
@@ -107,26 +118,32 @@ if(question > questionLength){
    <Text>Hide Answer and see the question.</Text>
   </TouchableOpacity>)
 }
-    { answer &&
-    <View>
-    <View>
-    <TouchableOpacity onPress={this._onPressButtonScore("correct")}>
-        <Text>Correct</Text>
+
+    <TouchableOpacity onPress={() => this._onPressButtonScore("correct")}>
+        <Text style={styles.correct}>Correct</Text>
     </TouchableOpacity>
-    </View>
-    <View>
-    <TouchableOpacity onPress={this._onPressButtonScore("incorrect")}>
-        <Text>Wrong</Text>
+
+    <TouchableOpacity onPress={() => this._onPressButtonScore("incorrect")}>
+        <Text style={styles.incorrect}>Incorrect</Text>
     </TouchableOpacity>
-    </View>
-    </View>
-    }
+    <Text>{JSON.stringify(this.state)}</Text>
+
 </View>
-
-
     )
   }
 }
 
+const styles = StyleSheet.create({
+  quizContainer :{
+    padding: 50,
+  },
+  correct: {
+    backgroundColor: 'green'
+  },
+  incorrect: {
+    backgroundColor: 'red'
+  }
+
+})
 
 export default (StartQuiz)

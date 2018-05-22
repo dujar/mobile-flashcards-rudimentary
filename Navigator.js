@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { createStackNavigator, createMaterialTopTabNavigator} from 'react-navigation'
-import {View,Text,} from 'react-native'
+import {View,Text,Animated, Easing} from 'react-native'
 import Decks from './Decks'
 import NewDeck from './NewDeck'
 import {FontAwesome, Ionicons}from '@expo/vector-icons'
 import StartQuiz from './StartQuiz'
 import NewCard from './NewCard'
 import Content from './Content'
-
+import Deck from './Deck'
 export const StackNavigator = createStackNavigator({
 
   Dashboard: {
@@ -21,12 +21,21 @@ export const StackNavigator = createStackNavigator({
   },
   NewCard: {
     screen: NewCard
+  },
+  Deck: {
+        screen: Deck
   }
 },
 {
-  initialRouteName: 'Dashboard'
-}
-)
+  initialRouteName: 'Dashboard',
+  transitionConfig: () => ({
+    transitionSpec: {
+      duration: 300,
+      easing: Easing.out(Easing.poly(4)),
+      timing: Animated.timing,
+    },
+})
+})
 
 export const TabNavigator = createMaterialTopTabNavigator({
   Home: {
@@ -36,11 +45,15 @@ export const TabNavigator = createMaterialTopTabNavigator({
       tabBarIcon: () => <FontAwesome name="home" size={30} color='black'/>
     }
   },
-  Content: {
-    screen: Content,
+  NewDeck: {
+    screen: NewDeck,
     navigationOptions: {
+      title: 'New Deck',
       tabBarIcon: () => <FontAwesome name="dashboard" size={30} color='black'/>
     }
   }
 
+},
+{
+  animationEnabled: true
 })

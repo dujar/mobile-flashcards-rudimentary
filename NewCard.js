@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import {View,Text,TextInput, TouchableOpacity} from 'react-native'
+import {View,Text,TextInput, TouchableOpacity, StyleSheet} from 'react-native'
 import * as actionHelpers from './helpers'
 import {connect} from 'react-redux'
 
@@ -33,12 +33,13 @@ class NewDeck extends Component {
       answer: this.state.answer
     }
     this.props.addCardToDeck(this.props.navigation.getParam('title',''),card)
+    this.props.navigation.navigate('Dashboard')
   }
   render(){
 
 
     return(
-      <View>
+      <View style={styles.cardContainer}>
         <Text>Question</Text>
         <TextInput
         onChangeText={(text) => this.setState({question: text})}
@@ -56,5 +57,13 @@ class NewDeck extends Component {
     )
   }
 }
+
+
+const styles = StyleSheet.create({
+  cardContainer:{
+    padding: 50,
+  }
+
+})
 
 export default connect(null,actionHelpers)(NewDeck)

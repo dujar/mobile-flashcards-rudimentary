@@ -23,6 +23,12 @@ class NewDeck extends Component {
 
   _onPressButton = () => {
     this.props.saveDeckTitle(this.state.text)
+    this.props.navigation.navigate("Deck",{
+      deck:{
+        title: this.state.text,
+        questions: []
+      }
+    })
   }
   render(){
 

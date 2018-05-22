@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import {FontAwesome, Ionicons}from '@expo/vector-icons'
-import {FlatList,View, Text, TouchableOpacity } from 'react-native'
+import {FlatList,View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native'
 
 
 
@@ -30,16 +30,12 @@ _onPressCard = (title) => {
   this.props.navigation.navigate('NewCard',{title})
 }
   _listItem = ({item}) => (
-    <View key={item.title}>
-      <Text>title: {item.title}</Text>
-      <Text>questions: {item.questions.length}</Text>
-      <TouchableOpacity onPress={() => this._onPress(item)}>
-        <Text> take quiz </Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => this._onPressCard(item.title)}>
-        <Text> add more cards</Text>
-      </TouchableOpacity>
+    <TouchableOpacity key={item.title} onPress={({navigation}) => this.props.navigation.navigate('Deck',{deck: item})}>
+    <View style={styles.deckContainer}>
+      <Text style={styles.text}>title: {item.title}</Text>
+      <Text style={styles.text}>questions: {item.questions.length}</Text>
     </View>
+    </TouchableOpacity>
 
   )
 render(){
@@ -55,7 +51,22 @@ return this.props.decks &&
 </View>)
 }
 }
+const styles = StyleSheet.create({
+deckContainer: {
+  padding: 10,
+  margin: 5,
+  backgroundColor: 'blue',
+  borderRadius: 15,
+  borderWidth: 0.5,
+  borderColor: '#d6d7da',
+},
+text :{
+  fontSize: 30,
+  fontStyle: 'italic',
+  fontWeight: '500'
+}
 
+})
 const mapStateToProps = (state) => {
 
   let decks = Object.keys(state.decks).map((el) => state.decks[el] )
