@@ -18,7 +18,8 @@ class Decks extends Component {
       fontWeight: 'bold',
     },
     tabBarIcon: () => <FontAwesome name="home" size={30} color='black'/>
-  };
+	}
+
 _onPress = (deck) => {
   console.log("working deck?",deck)
 this.props.navigation.navigate('Quiz', {
@@ -29,8 +30,8 @@ _onPressCard = (title) => {
   this.props.navigation.navigate('NewCard',{title})
 }
   _listItem = ({item}) => (
-    <TouchableOpacity onPress={({navigation}) => this.props.navigation.navigate('Deck',{deck: item})}>
-    <View style={styles.deckContainer} key={item.title}>
+    <TouchableOpacity key={item.title} onPress={({navigation}) => this.props.navigation.navigate('Deck',{deck: item})}>
+    <View style={styles.deckContainer}>
       <Text style={styles.text}>title: {item.title}</Text>
       <Text style={styles.text}>questions: {item.questions.length}</Text>
     </View>
@@ -53,7 +54,7 @@ return this.props.decks &&
   <FlatList
   // data={[{title: "hi", questions: ["3"]},{title: "hihi", questions: ["1","2"]}]}
   data={this.props.decks}
-  //keyExtractor={({item}) => item}
+	keyExtractor={(item) => item.title}
   renderItem={this._listItem}
 />
 </View>)

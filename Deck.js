@@ -26,9 +26,11 @@ const deck = this.props.navigation.getParam('deck', {
 				onPress={({navigation}) => this.props.navigation.navigate('NewCard',{title: deck.title})}>
 <Text>Add Card</Text>
   </TouchableOpacity>
-	{ deck.questions.length > 0  && (<TouchableOpacity style={styles.buttonQuiz} onPress={({navigation}) => this.props.navigation.navigate('Quiz',{deck})}>
+	{ deck.questions.length > 0  
+	? (<TouchableOpacity style={styles.buttonQuiz} onPress={() => this.props.navigation.navigate('Quiz',{deck})}>
   <Text>Start Quiz</Text>
 	</TouchableOpacity>)
+	: null
 	}
 </View>)
   }

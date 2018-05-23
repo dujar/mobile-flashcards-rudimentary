@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native'
-
+import {FontAwesome} from '@expo/vector-icons'
 import { clearLocalNotification, setLocalNotification } from './notification_helper.js'
 
 class StartQuiz extends Component {
@@ -19,8 +19,8 @@ class StartQuiz extends Component {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
-    tabBarIcon: () => <FontAwesome name="home" size={30} color='black'/>
-  };
+		tabBarIcon: () => <FontAwesome name="home" size={30} color='black'/>
+  }
 }
 
   state = {
@@ -73,10 +73,8 @@ class StartQuiz extends Component {
 _onPressBacktoDecksWithNotification = () => {
 
 				this.props.navigation.navigate('Dashboard')
-
 				try{
-
-				clearLocalNotification().then(setLocalNotification)
+				clearLocalNotification().then(setLocalNotification())
 				} catch (err) {
 				console.log("error occured setting notification for tomorrow:",err)
 				}
@@ -95,58 +93,55 @@ const index = currentQuestion - 1
 if(index === questionLength){
   return (
     <View style={styles.quizContainer}>
-      <Text>Score : {score } ---</Text>
-      {/* {
-        Object.keys(questions).map(el => (questions[el]
-            ? <Text key={el} style={styles.correct}> correcto: { deck.questions[el]} </Text>
-            : <Text key={el} style={styles.incorrect}> wrongo: { deck.questions[el]} </Text>
-        ))
-      } */}
+      <Text style={styles.text}>Score : {score } --- out of {questionLength}</Text>
 			<TouchableOpacity onPress={this._onPressBacktoDecksWithNotification}>
-							<Text>Go back to decks</Text>
+			<Text style={styles.correct}>Go back to decks</Text>
 			</TouchableOpacity>
     </View>
   )
 }
 
-    return(
-<View style={styles.quizContainer}>
-<Text>Question : {currentQuestion} out of {questionLength}</Text>
-						{ !answer 
-														?(<View>
-		<Text>{deck.questions[index].question}</Text>
-		<TouchableOpacity style={styles.buttonAnswer} onPress={this._onPressButtonAnswer}>
-    <Text>Check Answer</Text>
-		</TouchableOpacity>
-		</View>)
+return(<View style={styles.quizContainer}>
+<Text style={styles.text}>Question : {currentQuestion} out of {questionLength}</Text>
+{!answer
+								?(<View>
+												<Text style={styles.text}>{deck.questions[index].question}</Text>
+												<TouchableOpacity style={styles.buttonAnswer} onPress={this._onPressButtonAnswer}>
+												<Text>Check Answer!</Text>
+								</TouchableOpacity>
+				</View>)
   :(<View>
-    <Text>did you get it right?</Text>
-    <Text>Answer : {deck.questions[index].answer}</Text>
-	<TouchableOpacity style={styles.buttonQuestion} onPress={this._onPressButtonQuestion}>
-   <Text>Hide Answer and see the question.</Text>
-	 </TouchableOpacity>
-    </View>)
-}
-    <TouchableOpacity style={styles.correct} onPress={() => this._onPressButtonScore("correct")}>
-        <Text >Correct</Text>
-    </TouchableOpacity>
-
-    <TouchableOpacity style={styles.incorrect} onPress={() => this._onPressButtonScore("incorrect")}>
-        <Text >Incorrect</Text>
-    </TouchableOpacity>)
+					<Text style={styles.text}>did you get it right?</Text>
+<Text style={styles.text}>Answer : {deck.questions[index].answer}</Text>
+<TouchableOpacity style={styles.buttonQuestion} onPress={this._onPressButtonQuestion}>
+<Text>Hide Answer and see the question.</Text>
+</TouchableOpacity>
 </View>)
-  }
+}
+<TouchableOpacity style={styles.correct} onPress={() => this._onPressButtonScore("correct")}>
+<Text >Correct</Text>
+</TouchableOpacity>
+<TouchableOpacity style={styles.incorrect} onPress={() => this._onPressButtonScore("incorrect")}>
+<Text >Incorrect</Text>
+</TouchableOpacity>
+</View>)
+}
 }
 
 const styles = StyleSheet.create({
   quizContainer: {
     padding: 50,
-  },
+	},
+				text: {
+								fontWeight: '200',
+								fontSize: 30,
+				},
   correct: {
     backgroundColor: 'green',
 		borderRadius: 10,
 		padding: 5,
 		borderWidth: 5,
+		marginBottom: 5,
 		
   },
   incorrect: {
@@ -157,11 +152,18 @@ const styles = StyleSheet.create({
 	},
 	buttonAnswer: {
 		backgroundColor: 'blue',
+		marginBottom: 5,
+		borderRadius: 15,
+		borderWidth: 5,
+
 	},
 	buttonQuestion: {
-		backgroundColor: 'blue',		
+		borderRadius: 15,
+					borderWidth: 5,
+					backgroundColor: 'blue',
+					marginBottom: 5
 	}
 
 })
 
-export default (StartQuiz)
+export default StartQuiz

@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
 								fontWeight: '100',
 				},
 				buttonSubmit : {
-								textAlign: 'center',
 								backgroundColor: 'green',
 								borderRadius: 15,
 								borderWidth: 5,
