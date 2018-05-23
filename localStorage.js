@@ -1,43 +1,34 @@
 
-const __STATE__FLASHCARD__ = '__STATE_FLASHCARD__'
 import {AsyncStorage} from 'react-native'
+const __STATE__FLASHCARD__ = '@REDUX__STATE_FLASHCARD__'
 
 export const loadState = async() => {
-  const serialized = await AsyncStorage.getItem(__STATE__FLASHCARD__)
-  let initialState = {
-    React: {
-      title: 'React',
-      questions: [
-        {
-          question: 'What is React?',
-          answer: 'A library for managing user interfaces'
-        },
-        {
-          question: 'Where do you make Ajax requests in React?',
-          answer: 'The componentDidMount lifecycle event'
-        }
-      ]
-    },
-    JavaScript: {
-      title: 'JavaScript',
-      questions: [
-        {
-          question: 'What is a closure?',
-          answer: 'The combination of a function and the lexical environment within which that function was declared.'
-        }
-      ]
-    }
+				
+				let initialState = {fab : {title: 'fab', questions:[]}}
+
+				try {
+
+  const serializedState = await AsyncStorage.getItem(__STATE__FLASHCARD__)
+			const keys = await 	AsyncStorage.getAllKeys()
+				console.log("keys:",keys)
+				console.log("serialized async storage",serializedState)
+  if(serializedState === null){
+					return initialState
   }
-  if(serialized){
-    console.log(serialized)
-    return initialState = JSON.parse(serialized)
-  }
-  return initialState
+    return JSON.parse(serializedState)
+				} catch (err) {
+				return initialState
+				}
 
 }
 
-export const saveState = (state) => {
-console.log("state",state)
-AsyncStorage.setItem(__STATE__FLASHCARD__, state)
-
+export const saveState = async (state) => {
+try {
+				const serializedState = JSON.stringify(state)
+						const resp	=	await AsyncStorage.setItem(__STATE__FLASHCARD__, serializedState)
+				console.log("current state saved response", resp)
+				console.log("current state saved SERIALIZED", serializedState )
+} catch (err) {
+console.log("error saving state to async storage:", err)
+}
 }

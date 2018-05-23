@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import {FontAwesome, Ionicons}from '@expo/vector-icons'
 import {FlatList,View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native'
-
-
+import * as actionDecks from './helpers'
+import {loadState} from './localStorage.js'
 
 
 class Decks extends Component {
@@ -22,7 +22,6 @@ class Decks extends Component {
 _onPress = (deck) => {
   console.log("working deck?",deck)
 this.props.navigation.navigate('Quiz', {
-  deck
 })
 }
 
@@ -30,14 +29,23 @@ _onPressCard = (title) => {
   this.props.navigation.navigate('NewCard',{title})
 }
   _listItem = ({item}) => (
-    <TouchableOpacity key={item.title} onPress={({navigation}) => this.props.navigation.navigate('Deck',{deck: item})}>
-    <View style={styles.deckContainer}>
+    <TouchableOpacity onPress={({navigation}) => this.props.navigation.navigate('Deck',{deck: item})}>
+    <View style={styles.deckContainer} key={item.title}>
       <Text style={styles.text}>title: {item.title}</Text>
       <Text style={styles.text}>questions: {item.questions.length}</Text>
     </View>
     </TouchableOpacity>
 
   )
+
+
+
+componentDidMount(){
+	loadState().then(decks => {
+					console.log("component did mount decks from loadState:", decks)
+		this.props.fetchDecks(decks)
+	}) 
+}
 render(){
 
 return this.props.decks &&
@@ -45,7 +53,7 @@ return this.props.decks &&
   <FlatList
   // data={[{title: "hi", questions: ["3"]},{title: "hihi", questions: ["1","2"]}]}
   data={this.props.decks}
-  // keyExtractor={({item}) => item.title}
+  keyExtractor={({item}) => item}
   renderItem={this._listItem}
 />
 </View>)
@@ -78,4 +86,4 @@ console.log(Array.isArray(decks))
 }
 }
 
-export default connect(mapStateToProps)(Decks)
+export default connect(mapStateToProps, actionDecks)(Decks)

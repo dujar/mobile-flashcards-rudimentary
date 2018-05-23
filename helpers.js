@@ -1,16 +1,26 @@
-import {loadState, saveState} from './localStorage'
 import {
   ADD_DECK_TITLE,
   GET_DECK,
   GET_DECKS,
-  ADD_CARD_TO_DECK } from './actions'
+				ADD_CARD_TO_DECK,
+FETCH_DECKS} from './actions'
 
+
+// saving decks
 export const saveDeckTitle = (title) => {
 console.log("title:",title)
 return {
   type: ADD_DECK_TITLE,
   title
 }
+}
+
+export const fetchDecks = (decks) => {
+
+				return{
+								type: FETCH_DECKS,
+								decks 
+				}
 }
 
 export const getDecks = () => {

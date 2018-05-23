@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native'
 
+import { clearLocalNotification, setLocalNotification } from './notification_helper.js'
+
 class StartQuiz extends Component {
 
   constructor(){
@@ -71,7 +73,18 @@ class StartQuiz extends Component {
       currentQuestion: oldState.currentQuestion + 1,
       })
     )
-  }
+	}
+
+_onPressBacktoDecksWithNotification = () => {
+
+				this.props.navigation.navigate('Dashboard')
+				try{
+
+				clearLocalNotification().then(setLocalNotification)
+				} catch (err) {
+				console.log("error occured setting notification for tomorrow:",err)
+				}
+}
   render(){
 
     const {currentQuestion, answer} = this.state
@@ -93,6 +106,9 @@ if(index === questionLength){
             : <Text key={el} style={styles.incorrect}> wrongo: { deck.questions[el]} </Text>
         ))
       } */}
+			<TouchableOpacity onPress={this._onPressBacktoDecksWithNotification}>
+							<Text>Go back to decks</Text>
+			</TouchableOpacity>
     </View>
   )
 }

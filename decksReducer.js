@@ -1,5 +1,5 @@
 import {loadState} from './localStorage'
-import {ADD_DECK_TITLE, ADD_CARD_TO_DECK} from './actions'
+import {ADD_DECK_TITLE, ADD_CARD_TO_DECK, FETCH_DECKS} from './actions'
 
 let initialState = {
   React: {
@@ -29,7 +29,9 @@ let initialState = {
 
 const decksReducer = (state = initialState,action) => {
 
-  switch(action.type ) {
+				switch(action.type ) {
+		case FETCH_DECKS:
+		return action.decks
     case ADD_CARD_TO_DECK:
     return {
       ...state,
