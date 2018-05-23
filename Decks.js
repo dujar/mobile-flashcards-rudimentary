@@ -53,7 +53,7 @@ return this.props.decks &&
   <FlatList
   // data={[{title: "hi", questions: ["3"]},{title: "hihi", questions: ["1","2"]}]}
   data={this.props.decks}
-  keyExtractor={({item}) => item}
+  //keyExtractor={({item}) => item}
   renderItem={this._listItem}
 />
 </View>)
@@ -67,6 +67,7 @@ deckContainer: {
   borderRadius: 15,
   borderWidth: 0.5,
   borderColor: '#d6d7da',
+				borderBottomColor: '#bbb'
 },
 text :{
   fontSize: 30,

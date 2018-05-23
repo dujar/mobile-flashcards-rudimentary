@@ -5,11 +5,6 @@ import { clearLocalNotification, setLocalNotification } from './notification_hel
 
 class StartQuiz extends Component {
 
-  constructor(){
-    super()
-    this._onPressButtonAnswer = this._onPressButtonAnswer.bind(this)
-    this._onPressButtonScore = this._onPressButtonScore.bind(this)
-  }
   static navigationOptions = ({ navigation }) => {
 
     const {params} = navigation.state
@@ -78,6 +73,7 @@ class StartQuiz extends Component {
 _onPressBacktoDecksWithNotification = () => {
 
 				this.props.navigation.navigate('Dashboard')
+
 				try{
 
 				clearLocalNotification().then(setLocalNotification)
@@ -99,7 +95,7 @@ const index = currentQuestion - 1
 if(index === questionLength){
   return (
     <View style={styles.quizContainer}>
-      <Text>Score : {score } --- </Text>
+      <Text>Score : {score } ---</Text>
       {/* {
         Object.keys(questions).map(el => (questions[el]
             ? <Text key={el} style={styles.correct}> correcto: { deck.questions[el]} </Text>
@@ -115,50 +111,56 @@ if(index === questionLength){
 
     return(
 <View style={styles.quizContainer}>
-
-<Text> Question : {currentQuestion} out of {questionLength}</Text>
-
-{ !answer
-  ? <Text> {deck.questions[index].question} </Text>
-  : (<View>
-    <Text> did you get it right?</Text>
-    <Text>Answer : {deck.questions[index].answer} </Text>
+<Text>Question : {currentQuestion} out of {questionLength}</Text>
+						{ !answer 
+														?(<View>
+		<Text>{deck.questions[index].question}</Text>
+		<TouchableOpacity style={styles.buttonAnswer} onPress={this._onPressButtonAnswer}>
+    <Text>Check Answer</Text>
+		</TouchableOpacity>
+		</View>)
+  :(<View>
+    <Text>did you get it right?</Text>
+    <Text>Answer : {deck.questions[index].answer}</Text>
+	<TouchableOpacity style={styles.buttonQuestion} onPress={this._onPressButtonQuestion}>
+   <Text>Hide Answer and see the question.</Text>
+	 </TouchableOpacity>
     </View>)
 }
-
-{ !answer
-? (<TouchableOpacity onPress={this._onPressButtonAnswer}>
-        <Text>Check Answer</Text>
-  </TouchableOpacity>)
-: (<TouchableOpacity onPress={this._onPressButtonQuestion}>
-   <Text>Hide Answer and see the question.</Text>
-  </TouchableOpacity>)
-}
-
-    <TouchableOpacity onPress={() => this._onPressButtonScore("correct")}>
-        <Text style={styles.correct}>Correct</Text>
+    <TouchableOpacity style={styles.correct} onPress={() => this._onPressButtonScore("correct")}>
+        <Text >Correct</Text>
     </TouchableOpacity>
 
-    <TouchableOpacity onPress={() => this._onPressButtonScore("incorrect")}>
-        <Text style={styles.incorrect}>Incorrect</Text>
-    </TouchableOpacity>
-    <Text>{JSON.stringify(this.state)}</Text>
-
-</View>
-    )
+    <TouchableOpacity style={styles.incorrect} onPress={() => this._onPressButtonScore("incorrect")}>
+        <Text >Incorrect</Text>
+    </TouchableOpacity>)
+</View>)
   }
 }
 
 const styles = StyleSheet.create({
-  quizContainer :{
+  quizContainer: {
     padding: 50,
   },
   correct: {
-    backgroundColor: 'green'
+    backgroundColor: 'green',
+		borderRadius: 10,
+		padding: 5,
+		borderWidth: 5,
+		
   },
   incorrect: {
-    backgroundColor: 'red'
-  }
+    backgroundColor: 'red',
+		borderRadius: 10,
+		padding: 5,
+		borderWidth: 5,
+	},
+	buttonAnswer: {
+		backgroundColor: 'blue',
+	},
+	buttonQuestion: {
+		backgroundColor: 'blue',		
+	}
 
 })
 

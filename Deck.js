@@ -20,25 +20,47 @@ const deck = this.props.navigation.getParam('deck', {
 <View style={styles.deckContainer}>
 
 
-<Text> title: {deck.title}</Text>
-<Text> {deck.questions.length} cards</Text>
-<TouchableOpacity onPress={({navigation}) => this.props.navigation.navigate('NewCard',{title: deck.title})}>
+<Text style={styles.text}>deck: {deck.title}</Text>
+<Text style={styles.text}> {deck.questions.length} cards in the deck!</Text>
+<TouchableOpacity style={styles.buttonAdd}
+				onPress={({navigation}) => this.props.navigation.navigate('NewCard',{title: deck.title})}>
 <Text>Add Card</Text>
   </TouchableOpacity>
-
-  <TouchableOpacity onPress={({navigation}) => this.props.navigation.navigate('Quiz',{deck})}>
+	{ deck.questions.length > 0  && (<TouchableOpacity style={styles.buttonQuiz} onPress={({navigation}) => this.props.navigation.navigate('Quiz',{deck})}>
   <Text>Start Quiz</Text>
-  </TouchableOpacity>
-</View>
-  )
+	</TouchableOpacity>)
+	}
+</View>)
   }
 }
 
 const styles = StyleSheet.create({
   deckContainer:{
 padding :20,
-backgroundColor: 'purple'
-  }
+					backgroundColor: 'purple',
+					justifyContent: "space-around",
+					alignItems: 'center',
+
+	},
+				text: {
+								fontWeight: "300",
+								fontSize: 30,
+
+				},
+				buttonAdd: {
+								backgroundColor: "green",
+								borderRadius: 15,
+								borderWidth: 5,
+								padding: 10,
+								marginBottom: 10,
+
+				},
+				buttonQuiz: {
+								padding: 10,
+								borderWidth: 5,
+								borderRadius: 15,
+				backgroundColor: "red"
+				}
 })
 
 export default withOpacity(Deck)

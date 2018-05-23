@@ -40,16 +40,19 @@ class NewDeck extends Component {
 
     return(
       <View style={styles.cardContainer}>
-        <Text>Question</Text>
+        <Text style={styles.text}>Question</Text>
         <TextInput
+				style={styles.text}
         onChangeText={(text) => this.setState({question: text})}
         value={this.state.text}
         />
+        <Text style={styles.text}>Answer</Text>
         <TextInput
+					style={styles.text}
         onChangeText={(text) => this.setState({answer: text})}
         value={this.state.text}
         />
-        <TouchableOpacity onPress={this._onPressButton}>
+        <TouchableOpacity style={styles.submitButton}onPress={this._onPressButton}>
 
       <Text>Submit this new deck</Text>
     </TouchableOpacity>
@@ -62,7 +65,17 @@ class NewDeck extends Component {
 const styles = StyleSheet.create({
   cardContainer:{
     padding: 50,
-  }
+	},
+				text: {
+								fontWeight: '300',
+								fontSize: 40,
+
+				},
+				submitButton :{
+								borderRadius: 10,
+								backgroundColor: 'green',
+								borderWidth: 5,
+				}
 
 })
 
